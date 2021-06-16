@@ -23,6 +23,7 @@ void BinParse::Parse()
     if (!input.is_open())
     {
         std::cout << "File: " << filename << " not opened" << '!' << std::endl;
+        return;
     }
 
     input.seekg(76, std::ios::beg);
