@@ -7,6 +7,7 @@
 #include <map>
 #include <vector>
 #include <iomanip>
+#include <QImage>
 
 class BinParse
 {
@@ -16,11 +17,11 @@ private:
     uint32_t imgWidth;
     uint32_t imgHeight;
     std::map<int, std::vector<double>> imgLinesValue;
-    std::vector<std::vector<double>> imgMatrix;
+    std::vector<unsigned char> imgDataVector;
 public:
     BinParse(std::string filePath);
     ~BinParse();
     void Parse();
     void ShowImage();
-    void PrintImageMatrix();
+    QImage GenerateImage();
 };

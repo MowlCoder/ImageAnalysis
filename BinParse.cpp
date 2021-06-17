@@ -1,6 +1,7 @@
 #include "BinParse.h"
-
-#include <QDebug>
+#include <QImage>
+#include <QVector>
+#include <QRgb>
 
 BinParse::BinParse(std::string filePath)
 {
@@ -49,21 +50,26 @@ void BinParse::Parse()
 
     for (const auto& [key, value] : imgLinesValue)
     {
-        imgMatrix.push_back(value);
+        for (const auto& v : value)
+        {
+            imgDataVector.push_back((unsigned char)(255 * v));
+        }
     }
 }
 
-void BinParse::PrintImageMatrix()
+QImage BinParse::GenerateImage()
 {
-    for (const auto& line : imgMatrix)
-    {
-        for (const auto& value : line)
-        {
-            std::cout << std::setw(8) << value << '\t';
-        }
+    uchar* imgData = reinterpret_cast<uchar*>(imgDataVector.data());
 
-        std::cout << '\n';
-    }
+    QImage img(imgData, imgWidth, imgHeight, imgWidth, QImage::Format_Indexed8);
+
+    QVector<QRgb> color_table;
+    for(int i = 0; i < 256; ++i)
+        color_table.append(qRgb(i,i,i));
+
+    img.setColorTable(color_table);
+
+    return img;
 }
 
 void BinParse::ShowImage() {}
